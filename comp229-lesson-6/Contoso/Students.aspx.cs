@@ -28,10 +28,11 @@ namespace comp229_lesson_6 {
             using (ContosoContext db = new ContosoContext()) {
                 // query the Student Table using EF and LINQ
                 var Students = (from allStudents in db.Students
+                                orderby allStudents.LastName ascending
                                 select allStudents);
 
                 // bind the result to the Students GridView
-                StudentsGridView.DataSource = Students.ToList();
+                StudentsGridView.DataSource = Students.AsQueryable().OrderBy(s => s.FirstMidName).ToList();
                 StudentsGridView.DataBind();
             }
         }

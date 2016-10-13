@@ -14,6 +14,28 @@ namespace comp229_lesson_6 {
     public partial class StudentDetails : System.Web.UI.Page {
         protected void Page_Load(object sender, EventArgs e) {
 
+            if (!IsPostBack && Request.QueryString.Count > 0) {
+
+                getStudent();
+            }
+        }
+
+        private void getStudent() {
+
+            int studentId = Convert.ToInt32(Request.QueryString.Get("StudentID"));
+
+            using (ContosoContext db = new ContosoContext()) {
+
+                Student student = (from students in db.Students
+                                   where students.StudentID == studentId
+                                   select students).FirstOrDefault();
+
+                if (student != null) {
+                    LastNameTextBox.Text = student.LastName;
+                    FirstNameTextBox.Text = student.FirstMidName;
+                    EnrollmentDateTextBox.Text = student.EnrollmentDate.ToString("yyyy-MM-dd");
+                }
+            }
         }
 
         protected void CancelButton_Click(object sender, EventArgs e) {
@@ -29,11 +51,15 @@ namespace comp229_lesson_6 {
 
                 Student newStudent = new Student();
 
-                int StudentID = 0;
+                int studentId = 0;
 
                 if (Request.QueryString.Count > 0) // our URL has a STUDENTID in it
                 {
                     // get the id from the URL
+                    studentId = Convert.ToInt32(Request.QueryString.Get("StudentID"));
+                    newStudent = (from student in db.Students
+                                  where student.StudentID == studentId
+                                  select student).FirstOrDefault();
                 }
 
                 // add form data to the new student record
@@ -43,7 +69,7 @@ namespace comp229_lesson_6 {
 
                 // use LINQ to ADO.NET to add / insert new student into the db
 
-                if (StudentID == 0) {
+                if (studentId == 0) {
                     db.Students.Add(newStudent);
                 }
 

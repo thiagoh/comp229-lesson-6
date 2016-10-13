@@ -20,6 +20,11 @@
                         <asp:BoundField DataField="EnrollmentDate" HeaderText="Enrollment Date" Visible="true" 
                             DataFormatString="{0:MMM dd, yyyy}"/>
 
+                        <asp:HyperLinkField HeaderText="Edit" Text="<i class='fa fa-pencil-square-o fa-lg'></i> Edit"
+                            NavigateUrl="~/Contoso/StudentDetails.aspx.cs" ControlStyle-CssClass="btn btn-primary btn-sm"
+                            runat="server" DataNavigateUrlFields="StudentID"
+                            DataNavigateUrlFormatString="StudentDetails.aspx?StudentID={0}" />
+
                         <asp:CommandField HeaderText="Delete" DeleteText="<i class='fa fa-trash-o fa-lg'></i> Delete"
                             ShowDeleteButton="true" ButtonType="Link" ControlStyle-CssClass="btn btn-danger btn-sm" />
                     </Columns>
