@@ -6,10 +6,31 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
+// required for Identity and OWIN Security
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.Owin.Security;
+
 namespace comp229_lesson_6 {
     public partial class Site : System.Web.UI.MasterPage {
+
         protected void Page_Load(object sender, EventArgs e) {
-            Debug.WriteLine(Page.Title + " loaded...");
+
+            if (!IsPostBack) {
+
+                // check is a user is logged in
+
+                if (HttpContext.Current.User.Identity.IsAuthenticated) {
+
+                    ContosoPlaceHolder.Visible = true;
+                    PublicPlaceHolder.Visible = false;
+                } else {
+
+                    ContosoPlaceHolder.Visible = false;
+                    PublicPlaceHolder.Visible = true;
+                }
+            }
+
             SetActivePage();
         }
 
@@ -26,9 +47,6 @@ namespace comp229_lesson_6 {
                     break;
                 case "Departments":
                     departments.Attributes.Add("class", "active");
-                    break;
-                case "Enrollments":
-                    enrollments.Attributes.Add("class", "active");
                     break;
                 case "About":
                     about.Attributes.Add("class", "active");
